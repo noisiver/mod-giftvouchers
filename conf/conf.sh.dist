@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+DB_AUTH_CUSTOM_PATHS+=(
+    "$MOD_GIFTVOUCHERS_ROOT/sql/auth/base/"
+)
+
+DB_CHARACTERS_CUSTOM_PATHS+=(
+	"$MOD_GIFTVOUCHERS_ROOT/sql/characters/base/"
+)
