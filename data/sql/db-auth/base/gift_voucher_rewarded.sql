@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `gift_vouchers` (
+CREATE TABLE IF NOT EXISTS `gift_voucher_rewarded` (
     `account_id` INT(10) UNSIGNED NOT NULL,
     `realm_id` INT(10) UNSIGNED NOT NULL,
     `character_guid` INT(10) UNSIGNED NOT NULL,

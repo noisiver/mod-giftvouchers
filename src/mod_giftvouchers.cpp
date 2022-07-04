@@ -22,7 +22,7 @@ public:
 
     void OnLogin(Player* player) override
     {
-        if (!isCharacterValid(player))
+        if (!isAccountValid(player) || !isCharacterValid(player))
             return;
 
         if (player->GetFreeInventorySpace() == 0)
@@ -67,13 +67,23 @@ public:
             }
         }
 
-        QueryResult result = LoginDatabase.Query("REPLACE INTO `gift_vouchers` (`account_id`, `realm_id`, `character_guid`) VALUES ({}, {}, {})", player->GetSession()->GetAccountId(), sConfigMgr->GetOption<uint32>("RealmID", 0), player->GetGUID().GetCounter());
+        QueryResult result = LoginDatabase.Query("REPLACE INTO `gift_voucher_rewarded` (`account_id`, `realm_id`, `character_guid`) VALUES ({}, {}, {})", player->GetSession()->GetAccountId(), sConfigMgr->GetOption<uint32>("RealmID", 0), player->GetGUID().GetCounter());
     }
 
 private:
+    bool isAccountValid(Player* player)
+    {
+        QueryResult result = LoginDatabase.Query("SELECT * FROM `gift_voucher_accounts` WHERE `account_id` = {}", player->GetSession()->GetAccountId());
+
+        if (!result)
+            return false;
+
+        return true;
+    }
+
     bool isCharacterValid(Player* player)
     {
-        QueryResult result = LoginDatabase.Query("SELECT * FROM `gift_vouchers` WHERE `account_id` = {} AND `realm_id` = {} AND `character_guid` = {}", player->GetSession()->GetAccountId(), sConfigMgr->GetOption<uint32>("RealmID", 0), player->GetGUID().GetCounter());
+        QueryResult result = LoginDatabase.Query("SELECT * FROM `gift_voucher_rewarded` WHERE `account_id` = {} AND `realm_id` = {} AND `character_guid` = {}", player->GetSession()->GetAccountId(), sConfigMgr->GetOption<uint32>("RealmID", 0), player->GetGUID().GetCounter());
 
         if (!result)
             return true;
